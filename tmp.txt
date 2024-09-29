@@ -1,0 +1,169 @@
+6: simple_A (input: [x_0']), advanced_T_2 (input: [x_0',A]), lr=0.001
+7: advanced_A (input: [x_0']), advanced_T_2 (input: [x_0',A]), lr=0.0001 [later use pretrained model_theta]
+8: y0_ = model_phi(x0_), criterion(y0, y0_)
+9: train solely denoise: weather -> underwater
+10: y0_ = model_phi(x0), criterion(y0, y0_)
+11: y0_ = model_phi(x0_), criterion(y0, y0_)
+11_: y0_ = model_phi(x0_), criterion(y0, y0_), theta backprop same time as phi
+11_1: y0_ = model_phi(x0), criterion(y0, y0_), theta backprop same time as phi
+11_2: y0_ = model_phi(x0), criterion(y0, y0_), theta backprop same time as phi, loss = loss_theta + loss_phi
+
+12: y0_ = model_phi(x0_), criterion(y, y_)
+13: y0_ = model_phi(x0_), criterion(y0, y0_) + criterion(y, y_)
+14: y0_ = model_phi(x0), criterion(y0, y0_) + criterion(y, y_), theta backprop same time as phi
+15: y0_ = model_phi(x0), criterion(y0, y0_) + criterion(y, y_), theta backprop same time as phi, EMA
+16: no diffusion
+17: 15, val set, weighted phi & theta
+18: 15, on LSUI_UIEB dataset, 64x64
+19: 15, val set, on LSUI_UIEB dataset, 128x128
+20: 19, simple_A, simple_T
+21: 20, grayscale, 640x448
+
+14_: y0_ = model_phi(x0_), criterion(y, y_), theta backprop same time as phi
+15_: simple_A, advanced_T_3, y0_ = model_phi(x0), criterion(y0, y0_) + criterion(y, y_), theta backprop same time as phi, EMA
+16_: 15 + val set from (ANet, TNet without diffusion) code
+18_: 15, on SUID_UIEB dataset
+
+idx=0
+plt.subplot(3,3,1); 
+plt.imshow(x_cond.squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,2); 
+plt.imshow(xs[idx][0].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,3); 
+plt.imshow(xs[idx][3].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,4); 
+plt.imshow(xs[idx][6].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,5); 
+plt.imshow(xs[idx][9].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,6); 
+plt.imshow(xs[idx][12].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,7); 
+plt.imshow(xs[idx][18].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,8); 
+plt.imshow(xs[idx][21].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,9); 
+plt.imshow(xs[idx][24].squeeze().permute(1,2,0).cpu()); 
+plt.show()
+
+idx=0
+plt.subplot(3,3,1); 
+plt.imshow(x_cond.squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,2); 
+plt.imshow(xs[idx][0].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,3); 
+plt.imshow(xs[idx][3].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,4); 
+plt.imshow(xs[idx][6].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,5); 
+plt.imshow(xs[idx][9].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,6); 
+plt.imshow(xs[idx][12].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,7); 
+plt.imshow(xs[idx][18].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,8); 
+plt.imshow(xs[idx][21].squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,9); 
+plt.imshow(xs[idx][24].squeeze().permute(1,2,0).cpu()); 
+plt.show()
+
+
+
+idx=2
+plt.subplot(3,3,1); 
+plt.imshow(inverse_data_transform(x_cond).squeeze().permute(1,2,0).cpu()); 
+plt.subplot(3,3,2); 
+plt.imshow(inverse_data_transform(xs[idx][0][0,:,:,:]).permute(1,2,0).cpu()); 
+plt.subplot(3,3,3); 
+plt.imshow(inverse_data_transform(xs[idx][3][0,:,:,:]).permute(1,2,0).cpu()); 
+plt.subplot(3,3,4); 
+plt.imshow(inverse_data_transform(xs[idx][6][0,:,:,:]).permute(1,2,0).cpu()); 
+plt.subplot(3,3,5); 
+plt.imshow(inverse_data_transform(xs[idx][9][0,:,:,:]).permute(1,2,0).cpu()); 
+plt.subplot(3,3,6); 
+plt.imshow(inverse_data_transform(xs[idx][12][0,:,:,:]).permute(1,2,0).cpu()); 
+plt.subplot(3,3,7); 
+plt.imshow(inverse_data_transform(xs[idx][18][0,:,:,:]).permute(1,2,0).cpu()); 
+plt.subplot(3,3,8); 
+plt.imshow(inverse_data_transform(xs[idx][21][0,:,:,:]).permute(1,2,0).cpu()); 
+plt.subplot(3,3,9); 
+plt.imshow(inverse_data_transform(xs[idx][24][0,:,:,:]).permute(1,2,0).cpu()); 
+plt.show()
+
+
+
+idx=0
+plt.subplot(4,3,1).set_title("x0")
+plt.imshow(inverse_data_transform(x0[idx,:,:,:]).permute(1,2,0).cpu());
+plt.subplot(4,3,2).set_title("x")
+plt.imshow(inverse_data_transform(x[idx,:,:,:]).permute(1,2,0).cpu());
+plt.subplot(4,3,3).set_title("x0_")
+plt.imshow(inverse_data_transform(x0_[idx,:,:,:]).permute(1,2,0).cpu()); 
+plt.subplot(4,3,4).set_title("y0")
+plt.imshow(inverse_data_transform(y0[idx,:,:,:]).permute(1,2,0).cpu());
+plt.subplot(4,3,5).set_title("y")
+plt.imshow(inverse_data_transform(y[idx,:,:,:]).permute(1,2,0).cpu());
+plt.subplot(4,3,6).set_title("y_")
+plt.imshow(inverse_data_transform(y_[idx,:,:,:]).permute(1,2,0).cpu().detach().numpy());
+plt.subplot(4,3,7).set_title("y0_")
+plt.imshow(inverse_data_transform(y0_[idx,:,:,:]).permute(1,2,0).cpu().detach().numpy()); 
+A = model_phi.module.ANet(x0)
+T = model_phi.module.tNet(torch.cat((x0*0+A,x0),1))
+plt.subplot(4,3,8).set_title("A")
+plt.imshow(inverse_data_transform((x0_*0+A)[idx,:,:,:]).permute(1,2,0).cpu().detach().numpy()); 
+plt.subplot(4,3,9).set_title("T")
+plt.imshow(np.dot(inverse_data_transform(T[idx,:,:,:]).permute(1,2,0).cpu().detach().numpy(), [0.2989, 0.5870, 0.1140]), cmap='gray' );
+y0__ = model_phi(x0_)
+plt.subplot(4,3,10).set_title("y0__")
+plt.imshow(inverse_data_transform(y0__[idx,:,:,:]).permute(1,2,0).cpu().detach().numpy()); 
+print(t)
+plt.show()
+
+
+
+import matplotlib.pyplot as plt
+idx=0
+plt.subplot(3,3,1).set_title("x0")
+plt.imshow(inverse_data_transform(x0[idx,:,:,:]).permute(1,2,0).cpu());
+plt.subplot(3,3,2).set_title("x")
+plt.imshow(inverse_data_transform(x[idx,:,:,:]).permute(1,2,0).cpu());
+plt.subplot(3,3,3).set_title("x0_")
+x0_ = (x - (1.0-a).sqrt()*e_) / a.sqrt()
+plt.imshow(inverse_data_transform(x0_[idx,:,:,:]).permute(1,2,0).cpu().detach().numpy()); 
+plt.subplot(3,3,4).set_title("y0")
+plt.imshow(inverse_data_transform(y0[idx,:,:,:]).permute(1,2,0).cpu());
+plt.subplot(3,3,5).set_title("y")
+plt.imshow(inverse_data_transform(y[idx,:,:,:]).permute(1,2,0).cpu());
+plt.subplot(3,3,6).set_title("y_")
+plt.imshow(inverse_data_transform(y_[idx,:,:,:]).permute(1,2,0).cpu().detach().numpy());
+plt.subplot(3,3,7).set_title("y0_")
+plt.imshow(inverse_data_transform(y0_[idx,:,:,:]).permute(1,2,0).cpu().detach().numpy()); 
+A = model_phi.module.ANet(x0)
+T = model_phi.module.tNet(torch.cat((x0*0+A,x0),1))
+plt.subplot(3,3,8).set_title("A")
+plt.imshow(inverse_data_transform((x0*0+A)[idx,:,:,:]).permute(1,2,0).cpu().detach().numpy()); 
+plt.subplot(3,3,9).set_title("T")
+plt.imshow(np.dot(inverse_data_transform(T[idx,:,:,:]).permute(1,2,0).cpu().detach().numpy(), [0.2989, 0.5870, 0.1140]), cmap='gray' );
+print(t)
+plt.show()
+
+
+
+# train_UW-DDPM.py, uw_ddm_.py
+idx=4
+plt.subplot(1,3,1)
+plt.imshow(inverse_data_transform(x[4,:,:,:].permute(1,2,0).cpu())); 
+plt.subplot(1,3,2)
+plt.imshow(inverse_data_transform(y[4,:,:,:].permute(1,2,0).cpu()));
+plt.subplot(1,3,3)
+plt.imshow(inverse_data_transform(y_[4,:,:,:].permute(1,2,0).detach().cpu()));
+plt.show()
+
+
+# inference_2
+import matplotlib.pyplot as plt
+
+for i in range(25): plt.subplot(5,5,i+1); plt.imshow(inverse_data_transform(xt_list[i+1].squeeze().permute(1,2,0).cpu()));
+for i in range(25): utils.logging.save_image(inverse_data_transform(xt_list[i+1].squeeze().cpu()), f'results/seq2/out_xt/xt_{i}.png') ;
+plt.figure()
+for i in range(25): plt.subplot(5,5,i+1); plt.imshow(inverse_data_transform(yt_list[i].squeeze().permute(1,2,0).cpu()));
+plt.show()

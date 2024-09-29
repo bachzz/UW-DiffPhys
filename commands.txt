@@ -1,0 +1,3 @@
+python train_UW-DDIM.py --config underwater_lsui_uieb_128.yml --resume ckpts/LSUI_UIEB_ddpm.pth.tar
+
+python inference_UW-DDIM.py --config underwater_lsui_uieb_128.yml --resume ckpts/LSUI_UIEB_ddpm.pth.tar --sampling_timesteps 25 --eta 0 --condition_image data/LSUI_UIEB/val/raw --seed 5
