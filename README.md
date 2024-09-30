@@ -6,9 +6,11 @@ This is the code repository of the following [paper](https://arxiv.org/abs/2409.
 
 ## Data: LSUI-UIEB
 Download from: https://drive.google.com/drive/folders/1vqEKHNmdvWe6rludXSlkTwL-Kh18Q4FO?usp=sharing
+Then put into `./data` folder.
 
 ## Checkpoints
 Download from: https://drive.google.com/file/d/13dZWgUW7tCgBf4SVvqoCZUAHniKcMiU8/view?usp=sharing
+Then put into `./ckpts` folder.
 
 ## Training
 python train_UW-DDIM.py --config underwater_lsui_uieb_128.yml --resume ckpts/LSUI_UIEB_ddpm.pth.tar
