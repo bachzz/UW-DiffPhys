@@ -13,8 +13,8 @@ class Underwater:
 
     def get_loaders(self):
 
-        train_dataset = UnderwaterDataset(self.config, (640,448), train=True)
-        val_dataset = UnderwaterDataset(self.config, (640,448), train=False)
+        train_dataset = UnderwaterDataset(self.config, self.config.data.image_size, train=True)
+        val_dataset = UnderwaterDataset(self.config, self.config.data.image_size, train=False)
         print(len(train_dataset))
 
         train_loader = torch.utils.data.DataLoader(
@@ -90,7 +90,7 @@ class UnderwaterDataset(torch.utils.data.Dataset):
 
     def __getitem__(self, idx):
         input_im = Image.open(self.input_fnames[idx])
-        input_im = input_im.resize(self.im_size, Image.Resampling.LANCZOS)
+        input_im = input_im.resize((self.im_size, self.im_size), Image.Resampling.LANCZOS)
         input_im = self.to_tensor(input_im)
         gt_im = Image.open(self.gt_fnames[idx])
         gt_im = gt_im.resize((self.im_size, self.im_size), Image.Resampling.LANCZOS)
